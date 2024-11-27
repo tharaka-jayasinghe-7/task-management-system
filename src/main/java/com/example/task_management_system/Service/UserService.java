@@ -31,12 +31,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(int id) {
-        userRepository.deleteById(id);
+    public void deleteUser(int user_id) {
+        userRepository.deleteById(user_id);
     }
 
-    public User getUserById(int id) {
-        Optional<User> user = userRepository.findById(id);
+    public User getUserById(int user_id) {
+        Optional<User> user = userRepository.findById(user_id);
         if (user.isPresent()) {
             return user.get();
         }

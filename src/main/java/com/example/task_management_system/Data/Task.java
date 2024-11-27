@@ -1,5 +1,6 @@
 package com.example.task_management_system.Data;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,13 +15,15 @@ import java.util.Date;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int task_id;
     private String title;
     @Lob
     private String Description;
     private Date date;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id_pk", referencedColumnName = "id")
-    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;  // This is the foreign key to User
+
 }

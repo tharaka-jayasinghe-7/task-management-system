@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class TaskService {
@@ -17,11 +19,16 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public Task addTaskForUser(int userId, Task task) {
-        User user = new User();
-        user.setId(userId);
+    public Task addTaskForUser(int user_id, Task task) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + user_id));
 
-        task.setUser(user); // Associate the task with the user
-        return taskRepository.save(task); // Save the task
+        task.setUser(user);  // Set the user for the task
+        return taskRepository.save(task);  // Save the task
     }
+
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
+    }
+
 }

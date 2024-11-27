@@ -1,6 +1,7 @@
 package com.example.task_management_system.Data;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,14 +18,15 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int user_id;
     private String first_name;
     private String last_name;
     private String email;
     private String phone_number;
     private String password;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "task")
-    private Set<Task> tasks = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Task> tasks;
+
 }

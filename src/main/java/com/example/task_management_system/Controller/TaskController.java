@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -14,10 +16,16 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @PostMapping("/users/{id}/addtask")
-    public ResponseEntity<Task> addTask(@PathVariable int id, @RequestBody Task task) {
-        Task createdTask = taskService.addTaskForUser(id, task);
-        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+    @PostMapping("/users/{user_id}/addtask")
+    public ResponseEntity<Task> addTaskForUser(@PathVariable int user_id, @RequestBody Task task) {
+        Task createdTask = taskService.addTaskForUser(user_id, task);
+        return ResponseEntity.ok(createdTask);
+    }
+
+    @GetMapping("/gettasks")
+    public ResponseEntity<List<Task>> getAllTasks() {
+        List<Task> tasks = taskService.getAllTasks();
+        return ResponseEntity.ok(tasks);
     }
 }
 

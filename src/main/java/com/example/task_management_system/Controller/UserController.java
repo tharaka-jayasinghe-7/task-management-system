@@ -25,21 +25,21 @@ public class UserController {
         return userService.addUser(user);
     }
 
-    @PutMapping("/updateuser/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User user) {
-        user.setId(id);
+    @PutMapping("/updateuser/{user_id}")
+    public User updateUser(@PathVariable int user_id, @RequestBody User user) {
+        user.setUser_id(user_id);
         return userService.updateUser(user);
     }
 
-    @DeleteMapping("/deleteuser/{id}")
-    public String deleteUser(@PathVariable int id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/deleteuser/{user_id}")
+    public String deleteUser(@PathVariable int user_id) {
+        userService.deleteUser(user_id);
         return "User deleted";
     }
 
-    @GetMapping("/getuser/{id}")
-    public User getUserById(@PathVariable int id) {
-        return userService.getUserById(id);
+    @GetMapping("/getuser/{user_id}")
+    public User getUserById(@PathVariable int user_id) {
+        return userService.getUserById(user_id);
     }
 
 }
