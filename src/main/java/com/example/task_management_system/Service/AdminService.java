@@ -1,13 +1,12 @@
 package com.example.task_management_system.Service;
 
-
 import com.example.task_management_system.Data.Admin;
 import com.example.task_management_system.Data.AdminRepository;
 import com.example.task_management_system.Data.AdminResponse;
 import jakarta.transaction.Transactional;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 @Service
 @Transactional
@@ -17,6 +16,11 @@ public class AdminService {
     private AdminRepository adminRepository;
 
     public String validateAndRegisterAdmin(Admin admin) {
+        // Sanitize inputs before processing
+        admin.setEmail(StringEscapeUtils.escapeHtml4(admin.getEmail()));
+        admin.setPassword(StringEscapeUtils.escapeHtml4(admin.getPassword()));
+        admin.setConfirmPassword(StringEscapeUtils.escapeHtml4(admin.getConfirmPassword()));
+
         // Validate email
         if (admin.getEmail() == null || admin.getEmail().isEmpty()) {
             return "Email must not be empty";
@@ -52,21 +56,27 @@ public class AdminService {
 
     public AdminResponse authenticateAdmin(String email, String password) {
         System.out.println("Authenticating email: " + email); // Debug log
-        Admin admin = adminRepository.findByEmail(email);
+
+        // Sanitize inputs
+        String sanitizedEmail = StringEscapeUtils.escapeHtml4(email);
+        String sanitizedPassword = StringEscapeUtils.escapeHtml4(password);
+
+        Admin admin = adminRepository.findByEmail(sanitizedEmail);
 
         if (admin == null) {
-            System.out.println("Admin not found for email: " + email); // Debug log
+            System.out.println("Admin not found for email: " + sanitizedEmail); // Debug log
             return null;
         }
 
         System.out.println("Admin found: " + admin); // Debug log
-        System.out.println("Provided password: " + password); // Debug log
+        System.out.println("Provided password: " + sanitizedPassword); // Debug log
 
-        if (!admin.getPassword().equals(password)) {
-            System.out.println("Password mismatch for email: " + email); // Debug log
+        if (!admin.getPassword().equals(sanitizedPassword)) {
+            System.out.println("Password mismatch for email: " + sanitizedEmail); // Debug log
             return null;
         }
 
-        return new AdminResponse(admin.getId(), admin.getEmail());
+        // Return sanitized admin details
+        return new AdminResponse(admin.getId(), StringEscapeUtils.escapeHtml4(admin.getEmail()));
     }
 }
