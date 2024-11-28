@@ -22,6 +22,19 @@ public class TaskController {
         return ResponseEntity.ok(createdTask);
     }
 
+    @PutMapping("/users/{user_id}/updatetask/{task_id}")
+    public ResponseEntity<Task> updateTaskForUser(@PathVariable int user_id,@PathVariable int task_id, @RequestBody Task task) {
+        task.setTask_id(task_id);
+        Task createdTask = taskService.updateTaskForUser(user_id, task);
+        return ResponseEntity.ok(createdTask);
+    }
+
+    @DeleteMapping("/deletetask/{task_id}")
+    public String deleteTask(@PathVariable int task_id) {
+        taskService.deleteTask(task_id);
+        return "Task deleted";
+    }
+
     @GetMapping("/gettasks")
     public ResponseEntity<List<Task>> getAllTasks() {
         List<Task> tasks = taskService.getAllTasks();
