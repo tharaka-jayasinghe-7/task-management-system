@@ -19,6 +19,10 @@ public class SecurityConfig {
                                 .requestMatchers("/admin/**").permitAll()  // Allow access to admin routes without authentication
                                 .anyRequest().authenticated()  // All other requests need authentication
                 )
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("default-src 'self'; script-src 'self'; object-src 'none';"))  // Set strict CSP header
+                )
                 .formLogin(formLogin ->
                         formLogin
                                 .loginPage("/login")  // Customize login page
@@ -27,5 +31,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }
