@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.apache.commons.text.StringEscapeUtils;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -20,6 +22,24 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+    // Fetch all admins
+    @GetMapping("/all")
+    public ResponseEntity<List<Admin>> getAllAdmins() {
+        List<Admin> admins = adminService.getAllAdmins();
+        System.out.println("Admins retrieved: " + admins); // Log the list of admins
+        return ResponseEntity.ok(admins);
+    }
+
+    // Fetch admin by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Admin> getAdminById(@PathVariable Long id) {
+        Admin admin = adminService.getAdminById(id);
+        if (admin == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(admin);
+    }
 
     // Register a new admin
     @PostMapping("/register")
@@ -67,6 +87,17 @@ public class AdminController {
         } catch (Exception e) {
             log.error("Error occurred during admin login for email: {}", admin.getEmail(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during login");
+        }
+    }
+
+    // Delete an admin by ID
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteAdmin(@PathVariable Long id) {
+        boolean isDeleted = adminService.deleteAdminById(id);
+        if (isDeleted) {
+            return ResponseEntity.ok("Admin deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Admin not found");
         }
     }
 }
