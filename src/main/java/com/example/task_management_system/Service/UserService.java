@@ -46,4 +46,29 @@ public class UserService {
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);  // This method is defined in your repository
     }
+
+    public User authenticateUser(String email, String password) {
+        System.out.println("Authenticating email: " + email); // Debug log
+
+        // Find the user by email
+        User user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            System.out.println("User not found for email: " + email); // Debug log
+            return null;
+        }
+
+        System.out.println("User found: " + user); // Debug log
+        System.out.println("Provided password: " + password); // Debug log
+
+        // Compare the provided password with the stored password (plain text)
+        if (!user.getPassword().equals(password)) {
+            System.out.println("Password mismatch for email: " + email); // Debug log
+            return null;
+        }
+
+        // Return the user object after successful authentication
+        return user;
+    }
+
 }
