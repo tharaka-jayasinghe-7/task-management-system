@@ -42,4 +42,8 @@ public class UserService {
         }
         return null;
     }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);  // This method is defined in your repository
+    }
 }

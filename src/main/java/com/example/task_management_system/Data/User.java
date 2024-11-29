@@ -28,4 +28,9 @@ public class User {
     @JsonManagedReference
     private List<Task> tasks;
 
+    @Override
+    public String toString() {
+        return "User{id=" + user_id + ", first_name='" + first_name + "', last_name='" + last_name + "', email='" + email + "'}";
+    }
+
 }

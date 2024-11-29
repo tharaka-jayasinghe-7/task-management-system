@@ -63,5 +63,20 @@ public class UserController {
         }
         return user;
     }
+
+    @GetMapping("/getuserbyemail/{email}")
+    public User getUserByEmail(@PathVariable String email) {
+        log.info("Fetching user with email: {}", email);
+
+        User user = userService.getUserByEmail(email);
+
+        if (user == null) {
+            log.error("User with email {} not found", email);
+            return null;  // You could also return a custom error response or throw an exception
+        } else {
+            log.debug("Fetched user: {}", user);
+            return user;
+        }
+    }
 }
 
