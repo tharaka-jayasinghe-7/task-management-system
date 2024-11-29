@@ -54,5 +54,15 @@ public class TaskController {
         log.debug("Number of tasks fetched: {}", tasks.size());
         return ResponseEntity.ok(tasks);
     }
+    //task by user ID?
+    @GetMapping("/users/{user_id}/tasks")
+    public ResponseEntity<List<Task>> getTasksByUserId(@PathVariable int user_id) {
+        log.info("Fetching tasks for user with ID: {}", user_id);
+        List<Task> tasks = taskService.getTasksByUserId(user_id);
+        log.debug("Number of tasks fetched for user ID {}: {}", user_id, tasks.size());
+        return ResponseEntity.ok(tasks);
+    }
+
+
 }
 
