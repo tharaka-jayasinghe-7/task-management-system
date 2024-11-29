@@ -47,5 +47,9 @@ public class TaskService {
         return taskRepository.findByUserId(user_id);  // Use the updated repository method
     }
 
+    public List<Task> getAllTask() {
+        return taskRepository.findAll();
+    }
+
 
 }

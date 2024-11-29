@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/task")
@@ -62,6 +65,25 @@ public class TaskController {
         log.debug("Number of tasks fetched for user ID {}: {}", user_id, tasks.size());
         return ResponseEntity.ok(tasks);
     }
+
+    @GetMapping("/gettask")
+    public ResponseEntity<List<Map<String, Object>>> getAllTask() {
+        // Fetch all tasks from the service
+        List<Task> tasks = taskService.getAllTask();
+
+        // Convert tasks into a Map to include user_id
+        List<Map<String, Object>> response = tasks.stream().map(task -> {
+            Map<String, Object> taskMap = new HashMap<>();
+            taskMap.put("task_id", task.getTask_id());
+            taskMap.put("title", task.getTitle());
+            taskMap.put("description", task.getDescription());
+            taskMap.put("date", task.getDate());
+            taskMap.put("user_id", task.getUser() != null ? task.getUser().getUser_id() : null); // Fetch user_id from User object
+            return taskMap;
+        }).collect(Collectors.toList());
+
+        // Return the list of tasks with user IDs
+        return ResponseEntity.ok(response);}
 
 
 }
