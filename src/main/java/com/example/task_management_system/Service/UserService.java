@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -19,12 +21,18 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;  // Inject the password encoder
+
+
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
     public User addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+
     }
 
     public User updateUser(User user) {
@@ -59,13 +67,14 @@ public class UserService {
         }
 
         System.out.println("User found: " + user); // Debug log
-        System.out.println("Provided password: " + password); // Debug log
 
-        // Compare the provided password with the stored password (plain text)
-        if (!user.getPassword().equals(password)) {
+        // Compare the provided password with the stored password (encoded)
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             System.out.println("Password mismatch for email: " + email); // Debug log
             return null;
         }
+
+        System.out.println("Password matched for email: " + email); // Debug log
 
         // Return the user object after successful authentication
         return user;
