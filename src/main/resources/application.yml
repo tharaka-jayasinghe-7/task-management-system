@@ -6,4 +6,4 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file:
-    name: C:/Users/Tharaka/Desktop/task_manager_logs/logs.log
+    name: C:\Users\avind\OneDrive\Desktop\SS CW4
