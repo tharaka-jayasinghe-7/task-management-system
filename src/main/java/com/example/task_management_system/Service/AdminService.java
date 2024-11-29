@@ -8,12 +8,24 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 public class AdminService {
 
     @Autowired
     private AdminRepository adminRepository;
+
+    public List<Admin> getAllAdmins() {
+        return adminRepository.findAll();
+    }
+
+    public Admin getAdminById(Long id) {
+        Optional<Admin> admin = adminRepository.findById(id);
+        return admin.orElse(null);
+    }
 
     public String validateAndRegisterAdmin(Admin admin) {
         // Sanitize inputs before processing
@@ -78,5 +90,13 @@ public class AdminService {
 
         // Return sanitized admin details
         return new AdminResponse(admin.getId(), StringEscapeUtils.escapeHtml4(admin.getEmail()));
+    }
+
+    public boolean deleteAdminById(Long id) {
+        if (adminRepository.existsById(id)) {
+            adminRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
