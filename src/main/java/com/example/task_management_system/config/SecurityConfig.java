@@ -12,11 +12,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/admin/**")  // Optionally ignore CSRF for specific URLs
+                        .ignoringRequestMatchers("/admin/**", "/task/**", "/user/**")  // Optionally ignore CSRF for these URLs
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/admin/**").permitAll()  // Allow access to admin routes without authentication
+                                .requestMatchers("/admin/**", "/task/**", "/user/**").permitAll()  // Allow access to these routes without authentication
                                 .anyRequest().authenticated()  // All other requests need authentication
                 )
                 .headers(headers -> headers
