@@ -2,21 +2,21 @@ package com.example.task_management_system.Data;
 
 public class UserResponse {
 
-    private int userId;
+    private int user_id;
     private String email;
 
-    public UserResponse(int userId, String email) {
-        this.userId = userId;
+    public UserResponse(int user_id, String email) {
+        this.user_id = user_id;
         this.email = email;
     }
 
     // Getters and Setters
-    public int getUserId() {
-        return userId;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser_id(int userId) {
+        this.user_id = userId;
     }
 
     public String getEmail() {
